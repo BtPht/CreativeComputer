@@ -30,7 +30,7 @@ void testApp::update() {
         marking->update();
     }
 
-    for(int i = 0; i < markings.size(); i++)
+    for(auto i = 0u; i < markings.size(); i++)
     {
         markings[i]->update();
     }
@@ -82,7 +82,7 @@ void testApp::draw() {
         marking->draw();
     }
     
-    for(int i = 0; i < markings.size(); i++)
+    for(auto i = 0u; i < markings.size(); i++)
     {
         markings[i]->draw();
     }
@@ -93,7 +93,7 @@ void testApp::draw() {
 
 void testApp::exit()
 {
-    for(int i = 0; i < markings.size(); i++)
+    for(auto i = 0u; i < markings.size(); i++)
     {
         delete markings[i];
     }
