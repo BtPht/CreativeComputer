@@ -1,0 +1,4 @@
+ofxCv
+ofxOpenCv
+ofxGenerative
+ofxDrawnetic
