@@ -12,9 +12,6 @@ void testApp::setup() {
 	painting.loadImage("img/tree.jpg");
 	painting.resize(400,500);
 
-	marking = NULL;
-	brush = NULL;
-	paint = NULL;
 	it=0;
 
 }
@@ -28,11 +25,6 @@ void testApp::update() {
 
 void testApp::draw() {
 
-	if(marking != NULL)
-    {
-        marking->draw();
-    }
-    
     for(auto i = 0u; i < markings.size(); i++)
     {
         markings[i]->draw();
@@ -44,35 +36,27 @@ void testApp::draw() {
 
 void testApp::contourPainting(int x){
 
+	ofxCv::ContourFinder contourFinder;
 	contourFinder.setThreshold(ofMap(x, 0, ofGetWidth(), 0, 255));
 	contourFinder.findContours(painting);
 
 	for(auto &c : contourFinder.getContours()){
 
-		ofColor color = ofColor::black;
-
-		path = new ofxSuperPath();
-		path->setPathPressureType(OFX_PATH_PRESSURE_FIXED,10);
-		paint = new ofxPaint(path, color,2);
-		brush = new ofxRibbonBrush(path, paint);
-		brush->setDynamic(false);
-
-		marking = new ofxMarking(path, paint, brush);
-		path->reset();
-		path->lineStart(c[0].x,c[0].y,0,color, ofGetFrameNum(), 0);
+		BrushLine* line = new BrushLine(&markings);
+		line->lineStart(c[0].x,c[0].y);
 
 		for(auto &p : c){
-			path->lineTo(p.x,p.y,0,color, ofGetFrameNum(), 0);
+			line->lineTo(p.x,p.y);
 		}
 
-		marking->pathFinished();		
-		markings.push_back(marking);
-		marking = NULL;
+		line->lineEnd();
 	}
 }
 
 void testApp::allContourPainting(){
 
+
+	ofxCv::ContourFinder contourFinder;
 	for(int i=0; i<500; i++){
 		contourFinder.setThreshold(ofMap(i, 0, ofGetWidth(), 0, 255));
 		contourFinder.findContours(painting);
@@ -89,25 +73,14 @@ void testApp::allContourPainting(){
 
 		for(auto &c : all){
 
-			ofColor color = ofColor::black;
-	
-			path = new ofxSuperPath();
-			path->setPathPressureType(OFX_PATH_PRESSURE_FIXED,10);
-			paint = new ofxPaint(path, color,2);
-			brush = new ofxRibbonBrush(path, paint);
-			brush->setDynamic(false);
-
-			marking = new ofxMarking(path, paint, brush);
-			path->reset();
-			path->lineStart(c[0].x,c[0].y,0,color, ofGetFrameNum(), 0);
+			BrushLine* line= new BrushLine(&markings);
+			line->lineStart(c[0].x,c[0].y);
 
 			for(auto &p : c){
-				path->lineTo(p.x,p.y,0,color, ofGetFrameNum(), 0);
+				line->lineTo(p.x,p.y);
 			}
 
-			marking->pathFinished();		
-			markings.push_back(marking);
-			marking = NULL;
+			line->lineEnd();
 		}
 	}
 }
@@ -120,10 +93,6 @@ void testApp::exit()
     }
     markings.clear();
     
-    if(marking != NULL)
-    {
-        delete marking;
-    }
 }
 
 //--------------------------------------------------------------
