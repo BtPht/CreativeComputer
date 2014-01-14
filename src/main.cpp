@@ -5,9 +5,12 @@
 
 using namespace std;
 
-int main() {
+int main(int argc, char* argv[]) {
   
-	Weather test("London");
+	if(argc>1)
+	  Weather test(argv[1]) ;
+	else
+	  Weather test("Nantes") ;
 
 	ofSetupOpenGL(800, 500, OF_WINDOW);
 	ofRunApp(new testApp());
