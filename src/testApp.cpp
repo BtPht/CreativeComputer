@@ -65,7 +65,7 @@ void testApp::contourPainting(int x){
 			path->lineTo(p.x,p.y,0,color, ofGetFrameNum(), 0);
 		}
 
-		marking->pathFinished();		
+		marking->pathFinished();
 		markings.push_back(marking);
 		marking = NULL;
 	}
