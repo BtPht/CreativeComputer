@@ -18,75 +18,62 @@ void testApp::setup() {
 
 void testApp::update() {
 
-	cam.update();
-	if(cam.isFrameNew()) {
-		convertColor(cam, gray, CV_RGB2GRAY);
-		Canny(gray, edge,mouseX,mouseY, 3);
-		edge.update();
-	}
-
-	if(marking != NULL)
-    {
-        marking->update();
+    cam.update();
+    if(cam.isFrameNew()) {
+	    convertColor(cam, gray, CV_RGB2GRAY);
+	    Canny(gray, edge,mouseX,mouseY, 3);
+	    edge.update();
     }
 
-    for(auto i = 0u; i < markings.size(); i++)
-    {
-        markings[i]->update();
+    if(cam.isFrameNew()) {
+	    contourFinder.setThreshold(ofMap(mouseX, 0, ofGetWidth(), 0, 255));
+	    contourFinder.findContours(cam);
     }
+    
+    for(auto &m : markings)
+	    delete m;
 
-	if(cam.isFrameNew()) {
-		contourFinder.setThreshold(ofMap(mouseX, 0, ofGetWidth(), 0, 255));
-		contourFinder.findContours(cam);
-	}
+    markings.clear();
 
-	vector<vector<cv::Point> > contours = contourFinder.getContours();
+    for(auto &c : contourFinder.getContours()){
 
+	    ofColor color = ofColor::black;
+    
+	    path = new ofxSuperPath();
+	    path->setPathPressureType(OFX_PATH_PRESSURE_FIXED,10);
+	    paint = new ofxPaint(path, color,100);
+	    brush = new ofxRibbonBrush(path, paint);
+	    brush->setDynamic(false);
 
-	for(auto &m : markings)
-		delete m;
+	    marking = new ofxMarking(path, paint, brush);
+	    path->reset();
+	    path->lineStart(c[0].x,c[0].y,0,color, ofGetFrameNum(), 0);
 
-	markings.clear();
+	    for(auto &p : c){
+		    path->lineTo(p.x,p.y,0,color, ofGetFrameNum(), 0);
+	    }
 
-	for(auto &c : contours){
-
-		ofColor color = ofColor::black;
-	
-		path = new ofxSuperPath();
-		path->setPathPressureType(OFX_PATH_PRESSURE_FIXED,10);
-		paint = new ofxPaint(path, color,100);
-		brush = new ofxRibbonBrush(path, paint);
-		brush->setDynamic(false);
-
-		marking = new ofxMarking(path, paint, brush);
-		path->reset();
-		path->lineStart(c[0].x,c[0].y,0,color, ofGetFrameNum(), 0);
-
-		for(auto &p : c){
-			path->lineTo(p.x,p.y,0,color, ofGetFrameNum(), 0);
-		}
-
-		marking->pathFinished();
-		markings.push_back(marking);
-		marking = NULL;
-	}
+	    marking->pathFinished();
+	    markings.push_back(marking);
+	    marking = NULL;
+    }
 }
 
 void testApp::draw() {
 
-	//cam.draw(0, 0);
-	edge.draw(ofGetWidth()/3, 0);
-//	contourFinder.draw();
+    //cam.draw(0, 0);
+    edge.draw(ofGetWidth()/3, 0);
+    //contourFinder.draw();
 
 
-	if(marking != NULL)
+    if(marking != NULL)
     {
         marking->draw();
     }
     
-    for(auto i = 0u; i < markings.size(); i++)
+    for(auto &i : markings)
     {
-        markings[i]->draw();
+        i->draw();
     }
 
 	
@@ -95,9 +82,9 @@ void testApp::draw() {
 
 void testApp::exit()
 {
-    for(auto i = 0u; i < markings.size(); i++)
+    for(auto &i : markings)
     {
-        delete markings[i];
+        delete i;
     }
     markings.clear();
     
