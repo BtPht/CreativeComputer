@@ -104,7 +104,9 @@
 #
 #   Note: Leave a leading space when adding list items with the += operator
 ################################################################################
-# PROJECT_CFLAGS = 
+# PROJECT_CFLAGS =
+PROJECT_LDFLAGS += -lcurl 
+PROJECT_LDFLAGS += -L/usr/lib/x86_64-linux-gnu 
 
 ################################################################################
 # PROJECT OPTIMIZATION CFLAGS

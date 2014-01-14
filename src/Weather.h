@@ -1,11 +1,12 @@
-#include <stdio.h>
-#include <String>
+#include <iostream>
+#include <string>
 #include <curl/curl.h>
 
 class Weather
 {
-  Weather(std::String city);
+public:
+  Weather(const std::string& city);
 
 
 
-}
+};
