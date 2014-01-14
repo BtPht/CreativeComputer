@@ -2,7 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxCv.h"
-#include "ofxDrawnetic.h"
+#include "BrushLine.h"
 #include <iostream>
 
 class testApp : public ofBaseApp {
@@ -27,14 +27,8 @@ public:
 	
 	int it;
 	ofImage painting;
-
-	ofxMarking* marking;
-    ofxSuperPath* path;
-   	ofxPaint* paint;
-   	ofxRibbonBrush* brush;
     
     vector<ofxMarking *> markings;
-	ofxCv::ContourFinder contourFinder;
 
 	vector<vector<vector<cv::Point> > > allContours;
 };
