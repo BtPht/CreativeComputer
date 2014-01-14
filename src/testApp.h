@@ -22,10 +22,10 @@ public:
 	void windowResized(int w, int h);
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
+	void allContourPainting();
+	void contourPainting(int x);
 	
-	ofVideoGrabber cam;
-	ofPixels gray;
-	ofImage edge;
+	int it;
 	ofImage painting;
 
 	ofxMarking* marking;
@@ -35,4 +35,6 @@ public:
     
     vector<ofxMarking *> markings;
 	ofxCv::ContourFinder contourFinder;
+
+	vector<vector<vector<cv::Point> > > allContours;
 };
