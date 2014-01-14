@@ -49,19 +49,21 @@ void testApp::update() {
 	markings.clear();
 
 	for(auto &c : contours){
+
+		ofColor color = ofColor::black;
 	
 		path = new ofxSuperPath();
-		path->setPathPressureType(OFX_PATH_PRESSURE_FIXED,5);
-		paint = new ofxPaint(path, ofColor(ofRandom(255),ofRandom(255),ofRandom(255)),100);
+		path->setPathPressureType(OFX_PATH_PRESSURE_FIXED,10);
+		paint = new ofxPaint(path, color,100);
 		brush = new ofxRibbonBrush(path, paint);
 		brush->setDynamic(false);
 
 		marking = new ofxMarking(path, paint, brush);
 		path->reset();
-		path->lineStart(c[0].x,c[0].y,0, ofFloatColor(0), ofGetFrameNum(), 0);
+		path->lineStart(c[0].x,c[0].y,0,color, ofGetFrameNum(), 0);
 
 		for(auto &p : c){
-			path->lineTo(p.x,p.y,0, ofFloatColor(0), ofGetFrameNum(), 0);
+			path->lineTo(p.x,p.y,0,color, ofGetFrameNum(), 0);
 		}
 
 		marking->pathFinished();
@@ -126,29 +128,19 @@ void testApp::mouseMoved(int x, int y)
 //--------------------------------------------------------------
 void testApp::mouseDragged(int x, int y, int button)
 {
-    path->lineTo(x,y,0, ofFloatColor(0), ofGetFrameNum(), 0);
+
 }
 
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button)
 {
-    path = new ofxSuperPath();
-    paint = new ofxPaint(path, ofColor(ofRandom(255),ofRandom(255),ofRandom(255)),100);
-    brush = new ofxRibbonBrush(path, paint);
-    brush->setDynamic(false);
 
-    marking = new ofxMarking(path, paint, brush);
-    path->reset();
-    path->lineStart(x,y,0, ofFloatColor(0), ofGetFrameNum(), 0);
 }
 
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button)
 {
-    path->lineEnd(x,y,0, ofGetFrameNum(), -1, 0);
-    marking->pathFinished();
-    markings.push_back(marking);
-    marking = NULL;
+
 }
 
 //--------------------------------------------------------------
