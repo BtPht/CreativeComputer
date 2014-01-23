@@ -1,5 +1,11 @@
 #include "Weather.h"
 
+Weather::Weather() :
+temperature(0),
+humidity(0),
+pressure(0)
+{}
+
 Weather::Weather(const std::string& city)
 {
 //   CURL *curl;
@@ -35,9 +41,80 @@ Weather::Weather(const std::string& city)
   std::string meteo_url = "http://api.openweathermap.org/data/2.5/weather?q=";
   meteo_url += city ;
   meteo_url += "&mode=xml" ;
-  
+
   ofHttpResponse resp = ofLoadURL(meteo_url);
   
-  std::cout << resp.data << std::endl ;
+  std::cout << resp.data.getText() << std::endl ;
+  
+  ofXml file ;
+  file.loadFromBuffer(resp.data) ;
+  
+  file.setTo("current");
+  file.setTo("temperature");
+  
+  //std::cout << "name : " << file.getName() << std::endl ;
+  
+  //std::cout << "temperature : " << file.getAttribute("value") << std::endl ;
+  
+  temperature = std::atof(file.getAttribute("value").c_str()) ;
+  
+  file.setToParent();
+  file.setTo("humidity");
+  
+  humidity = std::atof(file.getAttribute("value").c_str()) ;
+  
+  file.setToParent();
+  file.setTo("pressure");
+  
+  pressure = std::atof(file.getAttribute("value").c_str()) ;
+}
+
+void Weather::setCity(const std::string& city){
+  
+  std::string meteo_url = "http://api.openweathermap.org/data/2.5/weather?q=";
+  meteo_url += city ;
+  meteo_url += "&mode=xml" ;
+
+  ofHttpResponse resp = ofLoadURL(meteo_url);
+  
+  std::cout << resp.data.getText() << std::endl ;
+  
+  ofXml file ;
+  file.loadFromBuffer(resp.data) ;
+  
+  file.setTo("current");
+  file.setTo("temperature");
+  
+  //std::cout << "name : " << file.getName() << std::endl ;
+  
+  //std::cout << "temperature : " << file.getAttribute("value") << std::endl ;
+  
+  temperature = std::atof(file.getAttribute("value").c_str()) ;
+  
+  file.setToParent();
+  file.setTo("humidity");
+  
+  humidity = std::atof(file.getAttribute("value").c_str()) ;
+  
+  file.setToParent();
+  file.setTo("pressure");
+  
+  pressure = std::atof(file.getAttribute("value").c_str()) ;
   
 }
+
+float Weather::getTemperature(){
+  return temperature;
+}
+
+float Weather::getHumidity(){
+  return humidity;
+}
+
+float Weather::getPressure(){
+  return pressure;
+}
+
+
+
+

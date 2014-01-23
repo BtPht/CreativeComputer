@@ -7,10 +7,14 @@ using namespace std;
 
 int main(int argc, char* argv[]) {
   
+	Weather test;
+  
 	if(argc>1)
-	  Weather test(argv[1]) ;
+	  test.setCity(argv[1]) ;
 	else
-	  Weather test("Nantes") ;
+	  test.setCity("Nantes") ;
+	
+	std::cout << test.getTemperature() << " " << test.getHumidity() << " " << test.getPressure() << std::endl ;
 
 	ofSetupOpenGL(800, 500, OF_WINDOW);
 	ofRunApp(new testApp());

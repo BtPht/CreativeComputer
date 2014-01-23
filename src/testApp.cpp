@@ -7,7 +7,7 @@ using namespace std;
 void testApp::setup() {
 
 	ofSetVerticalSync(true); 
-	ofEnableSmoothing(); 
+	ofEnableSmoothing();
 
 	painting.loadImage("img/tree.jpg");
 	painting.resize(400,500);
@@ -30,7 +30,7 @@ void testApp::draw() {
         markings[i]->draw();
     }
 
-	painting.draw(ofGetWidth()/2,0);
+    painting.draw(ofGetWidth()/2,0);
 
 }
 
