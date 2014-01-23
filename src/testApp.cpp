@@ -48,6 +48,7 @@ void testApp::contourPainting(int x){
 			line->lineTo(p.x,p.y,ofColor::red);
 		}
 		line->lineEnd();
+		delete line;
 	}
 }
 
