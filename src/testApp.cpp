@@ -43,10 +43,9 @@ void testApp::contourPainting(int x){
 	for(auto &c : contourFinder.getContours()){
 
 		BrushLine* line = new BrushLine(&markings);
-		line->lineStart(c[0].x,c[0].y);
 
-		for(auto &p : c){
-			line->lineTo(p.x,p.y);
+		for(auto &p : c){			
+			line->lineTo(p.x,p.y,ofColor::red);
 		}
 		line->lineEnd();
 	}
@@ -73,7 +72,6 @@ void testApp::allContourPainting(){
 		for(auto &c : all){
 
 			BrushLine* line= new BrushLine(&markings);
-			line->lineStart(c[0].x,c[0].y);
 
 			for(auto &p : c){
 				line->lineTo(p.x,p.y);

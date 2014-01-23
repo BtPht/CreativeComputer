@@ -7,14 +7,14 @@ public:
 
 	BrushLine(vector<ofxMarking *>* _markings,ofColor _color=ofColor::black,int thinkness=10,int opacity=2);
 
-	void lineStart(int,int);
-	void lineTo(int,int);
+	void lineTo(int x,int y,ofColor _color=NULL);
 	void lineEnd();
 
 	ofColor color;
 	ofxMarking* marking;
     ofxSuperPath* path;
-   	ofxPaint* paint;
+    ofxDynamicPalettePaint* paint;
    	ofxRibbonBrush* brush;
 	vector<ofxMarking *>* markings;
+	vector<ofColor>* colors;
 };
