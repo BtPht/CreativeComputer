@@ -24,10 +24,10 @@ public:
 	void gotMessage(ofMessage msg);
 	void allContourPainting();
 	void contourPainting(int x);
+	ofColor filterColor(int x,int y,int width_filter);
 	
 	int it;
 	ofImage painting;
-	unsigned char *pixels;
 
     vector<ofxMarking *> markings;
 

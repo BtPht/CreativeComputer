@@ -9,20 +9,21 @@ void testApp::setup() {
 	ofSetVerticalSync(true); 
 	ofEnableSmoothing();
 
-	painting.loadImage("img/wolkswagen.jpg");
-	painting.resize(400,500);
+	ofBackground(ofColor::black);
 
+	painting.loadImage("img/minions.jpg");
+	painting.resize(400,500);
 	it=0;
 
 }
 
 void testApp::update() {
 
-	while(it%10 != 0){
+	while(it%100 != 0){
 		contourPainting(it);
 		it++;
-		cout << it << endl;
 	}
+	cout << it << endl;
 	it++;
 
 }
@@ -48,12 +49,30 @@ void testApp::contourPainting(int x){
 
 		BrushLine* line = new BrushLine(&markings);
 
-		for(auto &p : c){			
-			line->lineTo(p.x,p.y,painting.getColor(p.x,p.y));
+		for(auto &p : c){
+
+			ofColor color = painting.getColor(p.x,p.y);
+			line->lineTo(p.x,p.y,color);
 		}
 		line->lineEnd();
 		delete line;
 	}
+}
+
+ofColor testApp::filterColor(int x,int y,int width_filter){
+
+	int size_filter = width_filter*width_filter*4+1;
+	ofColor color = painting.getColor(x,y)/size_filter;
+
+	for(int i=1;i<=width_filter;i++){
+		for(int j=1;j<=width_filter;j++){				
+			color += painting.getColor(x+i,y+j)/size_filter;
+			color += painting.getColor(x-i,y-j)/size_filter;
+			color += painting.getColor(x+i,y)/size_filter;
+			color += painting.getColor(x,y-j)/size_filter;
+		}	
+	}
+	return color;
 }
 
 void testApp::allContourPainting(){
