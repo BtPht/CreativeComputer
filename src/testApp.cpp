@@ -9,7 +9,7 @@ void testApp::setup() {
 	ofSetVerticalSync(true); 
 	ofEnableSmoothing();
 
-	painting.loadImage("img/tree.jpg");
+	painting.loadImage("img/wolkswagen.jpg");
 	painting.resize(400,500);
 
 	it=0;
@@ -18,12 +18,13 @@ void testApp::setup() {
 
 void testApp::update() {
 
-	while(it<200 && it%10 != 0){
+	while(it%10 != 0){
 		contourPainting(it);
 		it++;
 		cout << it << endl;
 	}
 	it++;
+
 }
 
 void testApp::draw() {
@@ -48,7 +49,7 @@ void testApp::contourPainting(int x){
 		BrushLine* line = new BrushLine(&markings);
 
 		for(auto &p : c){			
-			line->lineTo(p.x,p.y);
+			line->lineTo(p.x,p.y,painting.getColor(p.x,p.y));
 		}
 		line->lineEnd();
 		delete line;

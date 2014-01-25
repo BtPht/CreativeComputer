@@ -27,7 +27,8 @@ public:
 	
 	int it;
 	ofImage painting;
-    
+	unsigned char *pixels;
+
     vector<ofxMarking *> markings;
 
 	vector<vector<vector<cv::Point> > > allContours;
