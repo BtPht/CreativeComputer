@@ -9,17 +9,50 @@ void testApp::setup() {
 	ofSetVerticalSync(true); 
 	ofEnableSmoothing();
 
-	ofBackground(ofColor::black);
+	ofBackground(ofColor::white);
 
-	painting.loadImage("img/minions.jpg");
+	downloadImageFromUrl("http://wallpapers.wallbase.cc/rozne/wallpaper-1853128.jpg");
+
+	painting.loadImage("img/tmp.jpg");
 	painting.resize(400,500);
 	it=0;
 
 }
 
+void testApp::downloadImageFromUrl(string url){
+	
+	CURL *image; 
+	CURLcode imgresult; 
+	FILE *fp; 
+
+	image = curl_easy_init(); 
+	if(image){ 
+		// Open file 
+		fp = fopen("data/img/tmp.jpg", "wb"); 
+		if( fp == NULL ) cout << "File cannot be opened"; 
+
+		curl_easy_setopt(image, CURLOPT_URL, url.c_str()); 
+		curl_easy_setopt(image, CURLOPT_WRITEFUNCTION, NULL); 
+		curl_easy_setopt(image, CURLOPT_WRITEDATA, fp); 
+
+
+		// Grab image 
+		imgresult = curl_easy_perform(image); 
+		if( imgresult ){ 
+		    cout << "Cannot grab the image!\n"; 
+		} 
+	} 
+
+	// Clean up the resources 
+	curl_easy_cleanup(image); 
+	// Close the file 
+	fclose(fp); 
+
+}
+
 void testApp::update() {
 
-	while(it%100 != 0){
+	while(it%10 != 0){
 		contourPainting(it);
 		it++;
 	}
@@ -42,7 +75,8 @@ void testApp::draw() {
 void testApp::contourPainting(int x){
 
 	ofxCv::ContourFinder contourFinder;
-	contourFinder.setThreshold(ofMap(x, 0, ofGetWidth(), 0, 255));
+	contourFinder.setThreshold(x);
+	contourFinder.setFindHoles(true);
 	contourFinder.findContours(painting);
 
 	for(auto &c : contourFinder.getContours()){
@@ -73,37 +107,6 @@ ofColor testApp::filterColor(int x,int y,int width_filter){
 		}	
 	}
 	return color;
-}
-
-void testApp::allContourPainting(){
-
-
-	ofxCv::ContourFinder contourFinder;
-	for(int i=0; i<500; i++){
-		contourFinder.setThreshold(ofMap(i, 0, ofGetWidth(), 0, 255));
-		contourFinder.findContours(painting);
-
-		allContours.push_back(contourFinder.getContours());
-	}
-	
-	for(auto &m : markings)
-		delete m;
-
-	markings.clear();
-
-	for(auto &all : allContours){
-
-		for(auto &c : all){
-
-			BrushLine* line= new BrushLine(&markings);
-
-			for(auto &p : c){
-				line->lineTo(p.x,p.y);
-			}
-
-			line->lineEnd();
-		}
-	}
 }
 
 void testApp::exit()

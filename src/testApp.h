@@ -2,8 +2,10 @@
 
 #include "ofMain.h"
 #include "ofxCv.h"
+#include <curl/curl.h> 
 #include "BrushLine.h"
 #include <iostream>
+#include <string>
 
 class testApp : public ofBaseApp {
 public:
@@ -22,9 +24,9 @@ public:
 	void windowResized(int w, int h);
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
-	void allContourPainting();
 	void contourPainting(int x);
 	ofColor filterColor(int x,int y,int width_filter);
+	void downloadImageFromUrl(string url);
 	
 	int it;
 	ofImage painting;
