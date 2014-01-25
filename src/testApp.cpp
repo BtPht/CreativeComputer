@@ -18,9 +18,12 @@ void testApp::setup() {
 
 void testApp::update() {
 
-	contourPainting(it);
+	while(it<200 && it%10 != 0){
+		contourPainting(it);
+		it++;
+		cout << it << endl;
+	}
 	it++;
-	cout << it << endl;
 }
 
 void testApp::draw() {
@@ -45,7 +48,7 @@ void testApp::contourPainting(int x){
 		BrushLine* line = new BrushLine(&markings);
 
 		for(auto &p : c){			
-			line->lineTo(p.x,p.y,ofColor::red);
+			line->lineTo(p.x,p.y);
 		}
 		line->lineEnd();
 		delete line;
