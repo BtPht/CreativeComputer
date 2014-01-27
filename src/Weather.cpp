@@ -38,35 +38,8 @@ Weather::Weather(const std::string& city)
 //     curl_easy_cleanup(curl);
 //   }
   
-  std::string meteo_url = "http://api.openweathermap.org/data/2.5/weather?q=";
-  meteo_url += city ;
-  meteo_url += "&mode=xml" ;
-
-  ofHttpResponse resp = ofLoadURL(meteo_url);
+  setCity(city);
   
-  std::cout << resp.data.getText() << std::endl ;
-  
-  ofXml file ;
-  file.loadFromBuffer(resp.data) ;
-  
-  file.setTo("current");
-  file.setTo("temperature");
-  
-  //std::cout << "name : " << file.getName() << std::endl ;
-  
-  //std::cout << "temperature : " << file.getAttribute("value") << std::endl ;
-  
-  temperature = std::atof(file.getAttribute("value").c_str()) ;
-  
-  file.setToParent();
-  file.setTo("humidity");
-  
-  humidity = std::atof(file.getAttribute("value").c_str()) ;
-  
-  file.setToParent();
-  file.setTo("pressure");
-  
-  pressure = std::atof(file.getAttribute("value").c_str()) ;
 }
 
 void Weather::setCity(const std::string& city){
