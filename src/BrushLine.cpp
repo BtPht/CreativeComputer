@@ -10,8 +10,8 @@ BrushLine::BrushLine(vector<ofxMarking *>* _markings,ofColor _color,int thinknes
 	colors = new vector<ofColor>();
 	colors->push_back(_color);
 
-    paint = new ofxDynamicPalettePaint(path, *colors, 2);
-    paint->setDynamic(false);
+	paint = new ofxDynamicPalettePaint(path, *colors, 2);
+	paint->setDynamic(false);
 	
 	brush = new ofxRibbonBrush(path, paint);
 	brush->setDynamic(false);

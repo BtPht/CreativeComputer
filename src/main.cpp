@@ -16,6 +16,6 @@ int main(int argc, char* argv[]) {
 	
 	std::cout << test.getTemperature() << " " << test.getHumidity() << " " << test.getPressure() << std::endl ;
 
-	ofSetupOpenGL(800, 500, OF_WINDOW);
+	ofSetupOpenGL(1000, 600, OF_WINDOW);
 	ofRunApp(new testApp());
 }

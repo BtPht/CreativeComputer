@@ -11,10 +11,12 @@ void testApp::setup() {
 
 	ofBackground(ofColor::white);
 
-	downloadImageFromUrl("http://wallpapers.wallbase.cc/rozne/wallpaper-1853128.jpg");
+	//downloadImageFromUrl("http://wallpapers.wallbase.cc/rozne/wallpaper-1853128.jpg");
 
+	downloadImageFromUrl("http://spinoff.comicbookresources.com/wp-content/uploads/2013/09/american-psycho.jpg");
+	
 	painting.loadImage("img/tmp.jpg");
-	painting.resize(400,500);
+	painting.resize(500,600);
 	it=0;
 
 }
@@ -89,6 +91,7 @@ void testApp::contourPainting(int x){
 			line->lineTo(p.x,p.y,color);
 		}
 		line->lineEnd();
+		
 		delete line;
 	}
 }
