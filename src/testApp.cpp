@@ -13,12 +13,58 @@ void testApp::setup() {
 
 	//downloadImageFromUrl("http://wallpapers.wallbase.cc/rozne/wallpaper-1853128.jpg");
 
-	downloadImageFromUrl("http://spinoff.comicbookresources.com/wp-content/uploads/2013/09/american-psycho.jpg");
+	//downloadImageFromUrl("http://spinoff.comicbookresources.com/wp-content/uploads/2013/09/american-psycho.jpg");
+	
+	std::string requete;
+	
+	std::cin >> requete ;
+	
+	loadImageFromFlickr(requete);
 	
 	painting.loadImage("img/tmp.jpg");
 	painting.resize(500,600);
 	it=0;
 
+}
+
+void testApp::loadImageFromFlickr(std::string requete){
+  
+	string flickr = "http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=d9ebe546133e6c7ef96438a246dd1087&text=";
+	
+	flickr += requete ;
+	
+	ofHttpResponse resp = ofLoadURL(flickr);
+	
+	ofXml file ;
+	file.loadFromBuffer(resp.data) ;
+	
+	file.setTo("rsp");
+	file.setTo("photos");
+	
+	int rand = ofRandom(0,std::atof(file.getAttribute("perpage").c_str())) ;
+	
+	string child = "photo[";
+	child +=  to_string(rand) ;
+	child += "]";
+	
+	file.setTo(child);
+	
+	//http://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
+	
+	string imageUrl = "http://farm" ;
+	imageUrl += file.getAttribute("farm") ;
+	imageUrl += ".staticflickr.com/" ;
+	imageUrl += file.getAttribute("server");
+	imageUrl += "/";
+	imageUrl += file.getAttribute("id");
+	imageUrl += "_";
+	imageUrl += file.getAttribute("secret");
+	imageUrl += ".jpg" ;
+	
+	std::cout << "imageUrl = " << imageUrl << std::endl ;
+	
+	downloadImageFromUrl(imageUrl);
+  
 }
 
 void testApp::downloadImageFromUrl(string url){
@@ -91,6 +137,8 @@ void testApp::contourPainting(int x){
 			line->lineTo(p.x,p.y,color);
 		}
 		line->lineEnd();
+		
+		line->marking->draw();
 		
 		delete line;
 	}

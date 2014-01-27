@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxCv.h"
+#include "ofMath.h"
 #include <curl/curl.h> 
 #include "BrushLine.h"
 #include <iostream>
@@ -27,11 +28,12 @@ public:
 	void contourPainting(int x);
 	ofColor filterColor(int x,int y,int width_filter);
 	void downloadImageFromUrl(string url);
+	void loadImageFromFlickr(std::string requete);
 	
 	int it;
 	ofImage painting;
 
-    vector<ofxMarking *> markings;
+	vector<ofxMarking *> markings;
 
 	vector<vector<vector<cv::Point> > > allContours;
 };
