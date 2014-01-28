@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "ofxCv.h"
 #include "ofMath.h"
+
 #include <curl/curl.h> 
 #include "BrushLine.h"
 #include <iostream>
@@ -36,4 +37,6 @@ public:
 	vector<ofxMarking *> markings;
 
 	vector<vector<vector<cv::Point> > > allContours;
+	
+	ofImage screenImg;
 };

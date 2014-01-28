@@ -21,10 +21,11 @@ void testApp::setup() {
 	
 	loadImageFromFlickr(requete);
 	
-	painting.loadImage("img/tmp.jpg");
+	painting.loadImage("img/wolkswagen.jpg");
 	painting.resize(500,600);
 	it=0;
-
+	
+	screenImg.allocate(500, 600, OF_IMAGE_COLOR);
 }
 
 void testApp::loadImageFromFlickr(std::string requete){
@@ -106,18 +107,21 @@ void testApp::update() {
 	}
 	cout << it << endl;
 	it++;
-
+	screenImg.grabScreen(0,0,500,600);
 }
 
 void testApp::draw() {
-
+    
+    screenImg.draw(0,0);
+    
     for(auto i = 0u; i < markings.size(); i++)
     {
-        markings[i]->draw();
+	markings[i]->draw();
+	delete markings[i];
     }
-
+    markings.clear();
+    
     painting.draw(ofGetWidth()/2,0);
-
 }
 
 void testApp::contourPainting(int x){
@@ -137,8 +141,6 @@ void testApp::contourPainting(int x){
 			line->lineTo(p.x,p.y,color);
 		}
 		line->lineEnd();
-		
-		line->marking->draw();
 		
 		delete line;
 	}
