@@ -8,112 +8,48 @@ void testApp::setup() {
 
 	ofSetVerticalSync(true); 
 	ofEnableSmoothing();
+	ofBackground(ofColor::black);
 
-	ofBackground(ofColor::white);
+	bool internet = false;
 
-	//downloadImageFromUrl("http://wallpapers.wallbase.cc/rozne/wallpaper-1853128.jpg");
+	if(internet){
+		std::string requete;
+		std::cin >> requete ;
+	
+		Flickr::downloadImageFromFlickr(requete);
+		painting.loadImage("tmp.jpg");
 
-	//downloadImageFromUrl("http://spinoff.comicbookresources.com/wp-content/uploads/2013/09/american-psycho.jpg");
+		Weather wt;
+	  	wt.setCity("Nantes") ;
 	
-	std::string requete;
-	
-	std::cin >> requete ;
-	
-	loadImageFromFlickr(requete);
-	
-	painting.loadImage("img/wolkswagen.jpg");
+		std::cout << wt.getTemperature() << " " << wt.getHumidity() << " " << wt.getPressure() << std::endl ;
+	}
+	else
+		painting.loadImage("img/wolkswagen.jpg");
+
 	painting.resize(500,600);
-	it=0;
-	
+	it_treshold=0;
 	screenImg.allocate(500, 600, OF_IMAGE_COLOR);
-}
-
-void testApp::loadImageFromFlickr(std::string requete){
-  
-	string flickr = "http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=d9ebe546133e6c7ef96438a246dd1087&text=";
-	
-	flickr += requete ;
-	
-	ofHttpResponse resp = ofLoadURL(flickr);
-	
-	ofXml file ;
-	file.loadFromBuffer(resp.data) ;
-	
-	file.setTo("rsp");
-	file.setTo("photos");
-	
-	int rand = ofRandom(0,std::atof(file.getAttribute("perpage").c_str())) ;
-	
-	string child = "photo[";
-	child +=  to_string(rand) ;
-	child += "]";
-	
-	file.setTo(child);
-	
-	//http://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
-	
-	string imageUrl = "http://farm" ;
-	imageUrl += file.getAttribute("farm") ;
-	imageUrl += ".staticflickr.com/" ;
-	imageUrl += file.getAttribute("server");
-	imageUrl += "/";
-	imageUrl += file.getAttribute("id");
-	imageUrl += "_";
-	imageUrl += file.getAttribute("secret");
-	imageUrl += ".jpg" ;
-	
-	std::cout << "imageUrl = " << imageUrl << std::endl ;
-	
-	downloadImageFromUrl(imageUrl);
-  
-}
-
-void testApp::downloadImageFromUrl(string url){
-	
-	CURL *image; 
-	CURLcode imgresult; 
-	FILE *fp; 
-
-	image = curl_easy_init(); 
-	if(image){ 
-		// Open file 
-		fp = fopen("data/img/tmp.jpg", "wb"); 
-		if( fp == NULL ) cout << "File cannot be opened"; 
-
-		curl_easy_setopt(image, CURLOPT_URL, url.c_str()); 
-		curl_easy_setopt(image, CURLOPT_WRITEFUNCTION, NULL); 
-		curl_easy_setopt(image, CURLOPT_WRITEDATA, fp); 
-
-
-		// Grab image 
-		imgresult = curl_easy_perform(image); 
-		if( imgresult ){ 
-		    cout << "Cannot grab the image!\n"; 
-		} 
-	} 
-
-	// Clean up the resources 
-	curl_easy_cleanup(image); 
-	// Close the file 
-	fclose(fp); 
-
 }
 
 void testApp::update() {
 
-	while(it%10 != 0){
-		contourPainting(it);
-		it++;
-	}
-	cout << it << endl;
-	it++;
+	contourPainting(it_treshold);
+	cout << it_treshold << endl;
+	it_treshold++;
 	screenImg.grabScreen(0,0,500,600);
+
+	if(markings.empty()){
+		sleep(100);
+		cout <<"Break"<<endl;
+	}
 }
 
 void testApp::draw() {
     
     screenImg.draw(0,0);
-    
+	painting.draw(ofGetWidth()/2,0);
+
     for(auto i = 0u; i < markings.size(); i++)
     {
 	markings[i]->draw();
@@ -121,7 +57,7 @@ void testApp::draw() {
     }
     markings.clear();
     
-    painting.draw(ofGetWidth()/2,0);
+    
 }
 
 void testApp::contourPainting(int x){

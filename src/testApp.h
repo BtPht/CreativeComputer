@@ -4,10 +4,12 @@
 #include "ofxCv.h"
 #include "ofMath.h"
 
-#include <curl/curl.h> 
 #include "BrushLine.h"
+#include "Flickr.h"
+#include "Weather.h"
 #include <iostream>
 #include <string>
+#include <curl/curl.h> 
 
 class testApp : public ofBaseApp {
 public:
@@ -31,7 +33,7 @@ public:
 	void downloadImageFromUrl(string url);
 	void loadImageFromFlickr(std::string requete);
 	
-	int it;
+	int it_treshold;
 	ofImage painting;
 
 	vector<ofxMarking *> markings;
