@@ -1,8 +1,7 @@
 #include "BrushLine.h"
 
-BrushLine::BrushLine(vector<ofxMarking *>* _markings,ofColor _color,int thinkness,int opacity){
+BrushLine::BrushLine(ofColor _color,int thinkness,int opacity){
 
-	markings = _markings;
 	color = _color;
 	path = new ofxSuperPath();
 	path->setPathPressureType(OFX_PATH_PRESSURE_FIXED,10);
@@ -31,6 +30,10 @@ void BrushLine::lineTo(int x,int y,ofColor _color){
 }
 
 void BrushLine::lineEnd(){
+	marking->pathFinished();
+}
+
+void BrushLine::lineEnd(vector<ofxMarking *>* markings){
 	marking->pathFinished();
 	markings->push_back(marking);
 }

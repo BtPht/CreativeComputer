@@ -9,7 +9,8 @@
 #include "Weather.h"
 #include <iostream>
 #include <string>
-#include <curl/curl.h> 
+#include <curl/curl.h>
+
 
 class testApp : public ofBaseApp {
 public:
@@ -28,17 +29,13 @@ public:
 	void windowResized(int w, int h);
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
-	void contourPainting(int x);
+	vector<ofxMarking *> contourPainting(ofImage image,int treshold);
 	ofColor filterColor(int x,int y,int width_filter);
 	void downloadImageFromUrl(string url);
 	void loadImageFromFlickr(std::string requete);
 	
 	int it_treshold;
 	ofImage painting;
-
 	vector<ofxMarking *> markings;
-
-	vector<vector<vector<cv::Point> > > allContours;
-	
 	ofImage screenImg;
 };

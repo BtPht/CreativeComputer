@@ -5,9 +5,10 @@
 class BrushLine  {
 public:
 
-	BrushLine(vector<ofxMarking *>* _markings,ofColor _color=ofColor::black,int thinkness=10,int opacity=2);
+	BrushLine(ofColor _color=ofColor::black,int thinkness=10,int opacity=2);
 
 	void lineTo(int x,int y,ofColor _color=NULL);
+	void lineEnd(vector<ofxMarking *>* markings);
 	void lineEnd();
 
 	ofColor color;
@@ -15,6 +16,5 @@ public:
     ofxSuperPath* path;
     ofxDynamicPalettePaint* paint;
    	ofxRibbonBrush* brush;
-	vector<ofxMarking *>* markings;
 	vector<ofColor>* colors;
 };

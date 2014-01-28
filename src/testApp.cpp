@@ -34,14 +34,18 @@ void testApp::setup() {
 
 void testApp::update() {
 
-	contourPainting(it_treshold);
-	cout << it_treshold << endl;
-	it_treshold++;
+	markings = contourPainting(painting,it_treshold);
 	screenImg.grabScreen(0,0,500,600);
 
 	if(markings.empty()){
-		sleep(100);
-		cout <<"Break"<<endl;
+		string name = "result.jpg";
+		cout << "Image enregistrer : " << name << endl; 
+		screenImg.saveImage(name);
+		std::cin.ignore();
+	}
+	else{
+		cout << it_treshold << endl;
+		it_treshold++;
 	}
 }
 
@@ -60,26 +64,29 @@ void testApp::draw() {
     
 }
 
-void testApp::contourPainting(int x){
+vector<ofxMarking *> testApp::contourPainting(ofImage image,int treshold){
+
+	vector<ofxMarking *> result;
 
 	ofxCv::ContourFinder contourFinder;
-	contourFinder.setThreshold(x);
+	contourFinder.setThreshold(treshold);
 	contourFinder.setFindHoles(true);
-	contourFinder.findContours(painting);
+	contourFinder.findContours(image);
 
 	for(auto &c : contourFinder.getContours()){
 
-		BrushLine* line = new BrushLine(&markings);
+		BrushLine* line = new BrushLine();
 
 		for(auto &p : c){
 
-			ofColor color = painting.getColor(p.x,p.y);
+			ofColor color = image.getColor(p.x,p.y);
 			line->lineTo(p.x,p.y,color);
 		}
-		line->lineEnd();
-		
+		line->lineEnd(&result);	
 		delete line;
 	}
+
+	return result;
 }
 
 ofColor testApp::filterColor(int x,int y,int width_filter){
