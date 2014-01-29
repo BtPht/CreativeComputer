@@ -75,7 +75,7 @@ vector<ofxMarking *> testApp::contourPainting(ofImage image,int treshold){
 
 	for(auto &c : contourFinder.getContours()){
 
-		BrushLine line;
+		BrushLine line = BrushLine(ofColor::black,5);
 
 		for(auto &p : c){
 

@@ -1,15 +1,15 @@
 #include "BrushLine.h"
 
-BrushLine::BrushLine(ofColor _color,int thinkness,int opacity){
+BrushLine::BrushLine(ofColor _color,int thickness,int opacity){
 
 	color = _color;
 	path = new ofxSuperPath();
-	path->setPathPressureType(OFX_PATH_PRESSURE_FIXED,10);
+	path->setPathPressureType(OFX_PATH_PRESSURE_FIXED,thickness);
 
 	colors = new vector<ofColor>();
 	colors->push_back(_color);
 
-	paint = new ofxDynamicPalettePaint(path, *colors, 2);
+	paint = new ofxDynamicPalettePaint(path, *colors,opacity);
 	paint->setDynamic(false);
 	
 	brush = new ofxRibbonBrush(path, paint);

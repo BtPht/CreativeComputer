@@ -5,7 +5,7 @@
 class BrushLine  {
 public:
 
-	BrushLine(ofColor _color=ofColor::black,int thinkness=10,int opacity=2);
+	BrushLine(ofColor _color=ofColor::black,int thickness=10,int opacity=2);
 
 	void lineTo(int x,int y,ofColor _color=NULL);
 	void lineEnd(vector<ofxMarking *>* markings);
