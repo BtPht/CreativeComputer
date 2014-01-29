@@ -35,6 +35,7 @@ public:
 	void loadImageFromFlickr(std::string requete);
 	
 	int it_treshold;
+	bool allThresholdsDone ;
 	ofImage painting;
 	vector<ofxMarking *> markings;
 	ofImage screenImg;

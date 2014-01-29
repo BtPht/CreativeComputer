@@ -30,20 +30,22 @@ void testApp::setup() {
 	painting.resize(500,600);
 	it_treshold=0;
 	screenImg.allocate(500, 600, OF_IMAGE_COLOR);
+	allThresholdsDone = false;
 }
 
 void testApp::update() {
-
-	markings = contourPainting(painting,it_treshold);
-	screenImg.grabScreen(0,0,500,600);
-
-	if(markings.empty()){
-		string name = "result.jpg";
-		cout << "Image enregistrer : " << name << endl; 
-		screenImg.saveImage(name);
-		std::cin.ignore();
-	}
-	else{
+	
+	if(!allThresholdsDone){
+		markings = contourPainting(painting,it_treshold);
+		screenImg.grabScreen(0,0,500,600);
+	
+		if(markings.empty()){
+			allThresholdsDone = true ;
+			string name = "result.jpg";
+			cout << "Image enregistrer : " << name << endl; 
+			screenImg.saveImage(name);
+		}
+		
 		cout << it_treshold << endl;
 		it_treshold++;
 	}
