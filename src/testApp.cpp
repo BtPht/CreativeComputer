@@ -31,6 +31,8 @@ void testApp::setup() {
 	it_treshold=0;
 	screenImg.allocate(500, 600, OF_IMAGE_COLOR);
 	allThresholdsDone = false;
+    gifEncoder.setup(500,600,.25, 256);
+    ofAddListener(ofxGifEncoder::OFX_GIF_SAVE_FINISHED, this, &testApp::onGifSaved);
 }
 
 void testApp::update() {
@@ -38,15 +40,20 @@ void testApp::update() {
 	if(!allThresholdsDone){
 		markings = contourPainting(painting,it_treshold);
 		screenImg.grabScreen(0,0,500,600);
+
+		if(it_treshold%10 == 0)		
+		gifEncoder.addFrame(screenImg.getPixels(),500,600);
 	
 		if(markings.empty()){
 			allThresholdsDone = true ;
-			string name = "result.jpg";
-			cout << "Image enregistrer : " << name << endl; 
-			screenImg.saveImage(name);
+			string name = "result";
+			screenImg.saveImage(name+".jpg");
+			cout << "Image saved as " << name+".jpg" << endl;
+			cout << "Saving GIF ... " << endl; 
+			gifEncoder.save(name+".gif"); 
 		}
 		
-		cout << it_treshold << endl;
+		//cout << it_treshold << endl;
 		it_treshold++;
 	}
 }
@@ -106,6 +113,10 @@ ofColor testApp::filterColor(int x,int y,int width_filter){
 	return color;
 }
 
+void testApp::onGifSaved(string &fileName) {
+    cout << "GIF saved as " << fileName << endl;
+}
+
 void testApp::exit()
 {
     for(auto i = 0u; i < markings.size(); i++)
@@ -137,19 +148,19 @@ void testApp::mouseMoved(int x, int y)
 //--------------------------------------------------------------
 void testApp::mouseDragged(int x, int y, int button)
 {
-
+	drawing.lineTo(mouseX,mouseY);
 }
 
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button)
 {
-
+	drawing = BrushLine(ofColor::red,10,100);
 }
 
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button)
 {
-
+	drawing.lineEnd();
 }
 
 //--------------------------------------------------------------

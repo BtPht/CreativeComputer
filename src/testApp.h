@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "ofxCv.h"
 #include "ofMath.h"
+#include "ofxGifEncoder.h"
 
 #include "BrushLine.h"
 #include "Flickr.h"
@@ -31,12 +32,14 @@ public:
 	void gotMessage(ofMessage msg);
 	vector<ofxMarking *> contourPainting(ofImage image,int treshold);
 	ofColor filterColor(int x,int y,int width_filter);
-	void downloadImageFromUrl(string url);
-	void loadImageFromFlickr(std::string requete);
+	void onGifSaved(string &fileName);
 	
 	int it_treshold;
 	bool allThresholdsDone ;
 	ofImage painting;
 	vector<ofxMarking *> markings;
 	ofImage screenImg;
+	BrushLine drawing;
+	ofxGifEncoder gifEncoder;
+
 };
