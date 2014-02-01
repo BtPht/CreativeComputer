@@ -38,10 +38,10 @@ void testApp::setup() {
 void testApp::update() {
 	
 	if(!allThresholdsDone){
-		markings = contourPainting(it_treshold);
+		markings = contourPainting();
 		screenImg.grabScreen(0,0,500,600);
 
-		if(it_treshold%10 == 0)		
+		if(it_treshold%10 == 0)
 		gifEncoder.addFrame(screenImg.getPixels(),500,600);
 	
 		if(markings.empty()){
@@ -50,7 +50,7 @@ void testApp::update() {
 			screenImg.saveImage(name+".jpg");
 			cout << "Image saved as " << name+".jpg" << endl;
 			cout << "Saving GIF ... " << endl; 
-			gifEncoder.save(name+".gif"); 
+			gifEncoder.save(name+".gif");
 		}
 		
 		//cout << it_treshold << endl;
@@ -60,25 +60,25 @@ void testApp::update() {
 
 void testApp::draw() {
     
-    screenImg.draw(0,0);
+	screenImg.draw(0,0);
 	painting.draw(ofGetWidth()/2,0);
 
-    for(auto i = 0u; i < markings.size(); i++)
-    {
-	markings[i]->draw();
-	delete markings[i];
-    }
-    markings.clear();
+	for(auto i = 0u; i < markings.size(); i++)
+	{
+		markings[i]->draw();
+		delete markings[i];
+	}
+	markings.clear();
     
     
 }
 
-vector<ofxMarking *> testApp::contourPainting(int treshold){
+vector<ofxMarking *> testApp::contourPainting(){
 
 	vector<ofxMarking *> result;
 
 	ofxCv::ContourFinder contourFinder;
-	contourFinder.setThreshold(treshold);
+	contourFinder.setThreshold(it_treshold);
 	contourFinder.setFindHoles(true);
 	contourFinder.findContours(painting);
 
