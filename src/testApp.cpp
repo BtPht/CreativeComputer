@@ -38,7 +38,7 @@ void testApp::setup() {
 void testApp::update() {
 	
 	if(!allThresholdsDone){
-		markings = contourPainting(painting,it_treshold);
+		markings = contourPainting(it_treshold);
 		screenImg.grabScreen(0,0,500,600);
 
 		if(it_treshold%10 == 0)		
@@ -73,14 +73,14 @@ void testApp::draw() {
     
 }
 
-vector<ofxMarking *> testApp::contourPainting(ofImage image,int treshold){
+vector<ofxMarking *> testApp::contourPainting(int treshold){
 
 	vector<ofxMarking *> result;
 
 	ofxCv::ContourFinder contourFinder;
 	contourFinder.setThreshold(treshold);
 	contourFinder.setFindHoles(true);
-	contourFinder.findContours(image);
+	contourFinder.findContours(painting);
 
 	for(auto &c : contourFinder.getContours()){
 
@@ -88,7 +88,7 @@ vector<ofxMarking *> testApp::contourPainting(ofImage image,int treshold){
 
 		for(auto &p : c){
 
-			ofColor color = image.getColor(p.x,p.y);
+			ofColor color = painting.getColor(p.x,p.y);
 			line.lineTo(p.x,p.y,color);
 		}
 		line.lineEnd(&result);	

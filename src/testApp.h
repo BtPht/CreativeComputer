@@ -30,9 +30,11 @@ public:
 	void windowResized(int w, int h);
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
-	vector<ofxMarking *> contourPainting(ofImage image,int treshold);
+	vector<ofxMarking *> contourPainting(int treshold);
 	ofColor filterColor(int x,int y,int width_filter);
 	void onGifSaved(string &fileName);
+	
+	
 	
 	int it_treshold;
 	bool allThresholdsDone ;
