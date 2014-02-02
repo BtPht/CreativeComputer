@@ -16,7 +16,7 @@ void Flickr::downloadImageFromFlickr(std::string requete,std::string filename){
 	file.setTo("rsp");
 	file.setTo("photos");
 	
-	int rand = ofRandom(0,std::atof(file.getAttribute("perpage").c_str())) ;
+	int rand = ofRandom(0,10) ;
 	
 	string child = "photo[";
 	child +=  to_string(rand) ;
@@ -52,7 +52,7 @@ void Flickr::downloadImageFromUrl(std::string url,std::string filename){
 	image = curl_easy_init(); 
 	if(image){ 
 		// Open file 
-		fp = fopen(filename.c_str(), "wb"); 
+		fp = fopen(("data/"+filename).c_str(), "wb"); 
 		if( fp == NULL ) cout << "File cannot be opened"; 
 
 		curl_easy_setopt(image, CURLOPT_URL, url.c_str()); 

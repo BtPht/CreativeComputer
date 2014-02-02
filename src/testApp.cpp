@@ -10,19 +10,23 @@ void testApp::setup() {
 	ofEnableSmoothing();
 	ofBackground(ofColor::black);
 
-	bool internet = false;
+	bool internet = true;
 
 	if(internet){
 		std::string requete;
+		std::cout << "Que voulez-vous dessiner ?" << endl;
 		std::cin >> requete ;
 	
 		Flickr::downloadImageFromFlickr(requete);
 		painting.loadImage("tmp.jpg");
 
-		Weather wt;
 	  	wt.setCity("Nantes") ;
 	
-		std::cout << wt.getTemperature() << " " << wt.getHumidity() << " " << wt.getPressure() << std::endl ;
+		cout << "Temperature (kelvin) : " << wt.getTemperature() << endl;
+		cout << "Temperature (celcius) : " << wt.getTemperature()-273 << endl;
+		cout << "Humidity : " << wt.getHumidity() << endl;
+		cout << "Pressure : " << wt.getPressure() << endl;
+		cout << "Pressure (normalisation) : " << wt.getPressure()-1013 << endl;
 	}
 	else
 		painting.loadImage("img/wolkswagen.jpg");
@@ -84,11 +88,12 @@ vector<ofxMarking *> testApp::contourPainting(){
 
 	for(auto &c : contourFinder.getContours()){
 
-		BrushLine line = BrushLine(ofColor::black,5);
+		BrushLine line = BrushLine(ofColor::black,wt.getHumidity()/10,wt.getPressure()-1013);
 
 		for(auto &p : c){
-
+			
 			ofColor color = painting.getColor(p.x,p.y);
+			color.setSaturation((wt.getTemperature()-273)*255/30);
 			line.lineTo(p.x,p.y,color);
 		}
 		line.lineEnd(&result);	
