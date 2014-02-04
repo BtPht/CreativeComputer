@@ -40,6 +40,7 @@ public:
 	int it_treshold;
 	bool allThresholdsDone ;
 	bool stillHaveContours;
+	Weather wt;
 	ofImage painting;
 	vector<ofxMarking *> markings;
 	ofImage screenImg;
