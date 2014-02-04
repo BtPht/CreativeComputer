@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TESTAPP_H
+#define TESTAPP_H
 
 #include "ofMain.h"
 #include "ofxCv.h"
@@ -32,12 +33,13 @@ public:
 	void gotMessage(ofMessage msg);
 	vector<ofxMarking *> contourPainting();
 	ofColor filterColor(int x,int y,int width_filter);
-	void onGifSaved(string &fileName);
+	void onGifSaved(const std::string &fileName);
 	
 	
 	
 	int it_treshold;
 	bool allThresholdsDone ;
+	bool stillHaveContours;
 	ofImage painting;
 	vector<ofxMarking *> markings;
 	ofImage screenImg;
@@ -45,3 +47,5 @@ public:
 	ofxGifEncoder gifEncoder;
 
 };
+
+#endif

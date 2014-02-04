@@ -1,4 +1,5 @@
-#pragma once
+#ifndef BRUSHLINE_H
+#define BRUSHLINE_H
 
 #include "ofxDrawnetic.h"
 
@@ -18,3 +19,6 @@ public:
    	ofxRibbonBrush* brush;
 	vector<ofColor>* colors;
 };
+
+
+#endif

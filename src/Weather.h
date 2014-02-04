@@ -1,3 +1,6 @@
+#ifndef WEATHER_H
+#define WEATHER_H
+
 #include <iostream>
 #include <string>
 #include <curl/curl.h>
@@ -22,3 +25,5 @@ private :
   float humidity ;
   float pressure ;
 };
+
+#endif
