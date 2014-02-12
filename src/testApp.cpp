@@ -2,7 +2,6 @@
 
 using namespace ofxCv;
 using namespace cv;
-using namespace std;
 
 void testApp::setup() {
 
@@ -10,11 +9,11 @@ void testApp::setup() {
 	ofEnableSmoothing();
 	ofBackground(ofColor::black);
 
-	bool internet = true;
+	internet = false;
 
 	if(internet){
 		std::string requete;
-		std::cout << "Que voulez-vous dessiner ?" << endl;
+		std::cout << "Que voulez-vous dessiner ?" << std::endl;
 		std::cin >> requete ;
 	
 		Flickr::downloadImageFromFlickr(requete);
@@ -22,11 +21,11 @@ void testApp::setup() {
 
 	  	wt.setCity("Nantes") ;
 	
-		cout << "Temperature (kelvin) : " << wt.getTemperature() << endl;
-		cout << "Temperature (celcius) : " << wt.getTemperature()-273 << endl;
-		cout << "Humidity : " << wt.getHumidity() << endl;
-		cout << "Pressure : " << wt.getPressure() << endl;
-		cout << "Pressure (normalisation) : " << wt.getPressure()-1013 << endl;
+		std::cout << "Temperature (kelvin) : " << wt.getTemperature() << std::endl;
+		std::cout << "Temperature (celcius) : " << wt.getTemperature()-273 << std::endl;
+		std::cout << "Humidity : " << wt.getHumidity() << std::endl;
+		std::cout << "Pressure : " << wt.getPressure() << std::endl;
+		std::cout << "Pressure (normalisation) : " << wt.getPressure()-1013 << std::endl;
 	}
 	else
 		painting.loadImage("img/wolkswagen.jpg");
@@ -35,8 +34,8 @@ void testApp::setup() {
 	it_treshold=0;
 	screenImg.allocate(500, 600, OF_IMAGE_COLOR);
 	allThresholdsDone = false;
-    gifEncoder.setup(500,600,.25, 256);
-    ofAddListener(ofxGifEncoder::OFX_GIF_SAVE_FINISHED, this, &testApp::onGifSaved);
+	gifEncoder.setup(500,600,.25, 256);
+	//ofAddListener(ofxGifEncoder::OFX_GIF_SAVE_FINISHED, this, &testApp::onGifSaved);
 }
 
 void testApp::update() {
@@ -52,12 +51,12 @@ void testApp::update() {
 			allThresholdsDone = true ;
 			string name = "result";
 			screenImg.saveImage(name+".jpg");
-			cout << "Image saved as " << name+".jpg" << endl;
-			cout << "Saving GIF ... " << endl; 
+			std::cout << "Image saved as " << name+".jpg" << std::endl;
+			std::cout << "Saving GIF ... " << std::endl; 
 			gifEncoder.save(name+".gif");
 		}
 		
-		//cout << it_treshold << endl;
+		//std::cout << it_treshold << std::endl;
 		it_treshold++;
 	}
 }
@@ -87,9 +86,14 @@ vector<ofxMarking *> testApp::contourPainting(){
 	contourFinder.findContours(painting);
 
 	for(auto &c : contourFinder.getContours()){
+	  
+		BrushLine line;
 
-		BrushLine line = BrushLine(ofColor::black,wt.getHumidity()/10,wt.getPressure()-1013);
-
+		if(internet)
+			line = BrushLine(ofColor::black,wt.getHumidity()/10,wt.getPressure()-1013);
+		else
+			line = BrushLine(ofColor::black,5,255);
+		
 		for(auto &p : c){
 			
 			ofColor color = painting.getColor(p.x,p.y);
@@ -118,8 +122,8 @@ ofColor testApp::filterColor(int x,int y,int width_filter){
 	return color;
 }
 
-void testApp::onGifSaved(string &fileName) {
-    cout << "GIF saved as " << fileName << endl;
+void testApp::onGifSaved(const std::string &fileName) {
+    std::cout << "GIF saved as " << fileName << std::endl;
 }
 
 void testApp::exit()
@@ -153,19 +157,19 @@ void testApp::mouseMoved(int x, int y)
 //--------------------------------------------------------------
 void testApp::mouseDragged(int x, int y, int button)
 {
-	drawing.lineTo(mouseX,mouseY);
+	//drawing.lineTo(mouseX,mouseY);
 }
 
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button)
 {
-	drawing = BrushLine(ofColor::red,10,100);
+	//drawing = BrushLine(ofColor::red,10,100);
 }
 
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button)
 {
-	drawing.lineEnd();
+	//drawing.lineEnd();
 }
 
 //--------------------------------------------------------------

@@ -36,7 +36,7 @@ public:
 	void onGifSaved(const std::string &fileName);
 	
 	
-	
+	bool internet;
 	int it_treshold;
 	bool allThresholdsDone ;
 	bool stillHaveContours;
