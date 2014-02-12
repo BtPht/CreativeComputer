@@ -35,7 +35,7 @@ void testApp::setup() {
 	screenImg.allocate(500, 600, OF_IMAGE_COLOR);
 	allThresholdsDone = false;
 	gifEncoder.setup(500,600,.25, 256);
-	//ofAddListener(ofxGifEncoder::OFX_GIF_SAVE_FINISHED, this, &testApp::onGifSaved);
+	ofAddListener(ofxGifEncoder::OFX_GIF_SAVE_FINISHED, this, &testApp::onGifSaved);
 }
 
 void testApp::update() {
@@ -123,7 +123,7 @@ ofColor testApp::filterColor(int x,int y,int width_filter){
 	return color;
 }
 
-void testApp::onGifSaved(const std::string &fileName) {
+void testApp::onGifSaved(std::string &fileName) {
     std::cout << "GIF saved as " << fileName << std::endl;
 }
 
