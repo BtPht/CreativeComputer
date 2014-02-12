@@ -92,12 +92,13 @@ vector<ofxMarking *> testApp::contourPainting(){
 		if(internet)
 			line = BrushLine(ofColor::black,wt.getHumidity()/10,wt.getPressure()-1013);
 		else
-			line = BrushLine(ofColor::black,5,255);
+			line = BrushLine();
 		
 		for(auto &p : c){
 			
 			ofColor color = painting.getColor(p.x,p.y);
-			color.setSaturation((wt.getTemperature()-273)*255/30);
+			if(internet)
+				color.setSaturation((wt.getTemperature()-273)*255/30);
 			line.lineTo(p.x,p.y,color);
 		}
 		line.lineEnd(&result);	
