@@ -33,7 +33,7 @@ public:
 	void gotMessage(ofMessage msg);
 	vector<ofxMarking *> contourPainting();
 	ofColor filterColor(int x,int y,int width_filter);
-	void onGifSaved(const std::string &fileName);
+	void onGifSaved(std::string &fileName);
 	
 	
 	bool internet;
