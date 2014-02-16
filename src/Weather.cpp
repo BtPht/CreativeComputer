@@ -7,7 +7,16 @@ pressure(0)
 {}
 
 Weather::Weather(const std::string& city)
-{
+{  
+  setCity(city); 
+}
+
+void Weather::setCity(const std::string& city){
+
+/* En raison des problèmes de proxy nous avons réalisé une implémentation
+ * à l'aide de la librairie libcurl offrant la possibilité de sélectionner
+ * un serveur proxy
+ */  
 //   CURL *curl;
 //   CURLcode res;
 //  
@@ -38,23 +47,23 @@ Weather::Weather(const std::string& city)
 //     curl_easy_cleanup(curl);
 //   }
   
-  setCity(city);
   
-}
-
-void Weather::setCity(const std::string& city){
-  
+  /* La première étape est de créer une url
+   */
   std::string meteo_url = "http://api.openweathermap.org/data/2.5/weather?q=";
   meteo_url += city ;
   meteo_url += "&mode=xml" ;
 
+  /* On récupère ensuite le fichier xml renvoyé par le serveur
+   */
   ofHttpResponse resp = ofLoadURL(meteo_url);
-  
-  std::cout << resp.data.getText() << std::endl ;
   
   ofXml file ;
   file.loadFromBuffer(resp.data) ;
   
+  /* On parcour enfin le fichier d'après la DTD donnée par le site fournisseur de l'API
+   * afin de récupérer toutes les informations désirées
+   */
   file.setTo("current");
   file.setTo("temperature");
   
@@ -76,15 +85,15 @@ void Weather::setCity(const std::string& city){
   
 }
 
-float Weather::getTemperature(){
+float Weather::getTemperature() const{
   return temperature;
 }
 
-float Weather::getHumidity(){
+float Weather::getHumidity() const{
   return humidity;
 }
 
-float Weather::getPressure(){
+float Weather::getPressure() const{
   return pressure;
 }
 
