@@ -2,8 +2,10 @@
 
 Flickr::Flickr(){}
 
-void Flickr::downloadImageFromFlickr(std::string requete,std::string filename){
+void Flickr::downloadImageFromFlickr(const std::string requete,const std::string filename){
   
+	/* La première étape est de construire l'URL
+	 */
 	string flickr = "http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=d9ebe546133e6c7ef96438a246dd1087&text=";
 	
 	flickr += requete ;
@@ -22,6 +24,10 @@ void Flickr::downloadImageFromFlickr(std::string requete,std::string filename){
 	child +=  to_string(rand) ;
 	child += "]";
 	
+	/* Le fichier XML récupéré ne contient pas d'url directe vers des images.
+	 * Il faut le parcourir afin de récupérer les attributs qui vont eux permettre
+	 * de créer un lien vers l'image
+	 */
 	file.setTo(child);
 	
 	//http://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
@@ -38,12 +44,14 @@ void Flickr::downloadImageFromFlickr(std::string requete,std::string filename){
 	
 	std::cout << "imageUrl = " << imageUrl << std::endl ;
 	
+	/* Une fois l'url créé nous appelons la méthode de téléchargement d'image
+	 */
 	downloadImageFromUrl(imageUrl,filename);
   
 }
 
 
-void Flickr::downloadImageFromUrl(std::string url,std::string filename){
+void Flickr::downloadImageFromUrl(const std::string url,const std::string filename){
 	
 	CURL *image; 
 	CURLcode imgresult; 
